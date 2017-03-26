@@ -8,7 +8,9 @@ form="""
 Enter some test to ROT13:
 <br>
 
-<input type="text" name="q" value="%s">
+<textarea name="text" cols="80" rows="20">
+%s
+</textarea>
 
 <br>
 <input type="submit">
@@ -32,20 +34,12 @@ class MainPage(webapp2.RequestHandler):
         self.response.out.write(self.getForm())
     
     def post(self):
-        q_val = self.request.get("q")
-        q_rot = self.rot13(q_val)
-        q_san = self.sanitize(q_rot)
-        self.response.out.write(self.getForm(q_san))
+        t_val = self.request.get("text")
+        t_rot = self.rot13(t_val)
+        t_san = self.sanitize(t_rot)
+        self.response.out.write(self.getForm(t_san))
 
-class TestHandler(webapp2.RequestHandler):
-    def get(self):
-        q = self.request.get("q")
-        if (q=="a"):
-            self.response.out.write("Hihi")
-        self.response.out.write(q)
-        
-
-application = webapp2.WSGIApplication([('/', MainPage), ('/testform', TestHandler)], debug=True)
+application = webapp2.WSGIApplication([('/', MainPage)], debug=True)
 
 
 def main():
